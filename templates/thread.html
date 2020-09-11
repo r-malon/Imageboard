@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block head %}
+	{{ super() }}
+{% endblock %}
+
+{% block content %}
+	<h1>{{title}}</h1>
+	<p>Posted at {{time}}</p>
+	<p>{{body}}</p>
+
+	<p>{{replies_count}} replies</p>
+
+	<form action="/{{tag}}/{{thread_id}}/reply" method="post" enctype="multipart/form-data">
+		<textarea name="body" placeholder="Write your reply..." rows="4" cols="30" required></textarea>
+		<br>
+		<button>Reply</button>
+	</form>
+
+	{% for reply in replies %}
+		<div class="box">
+			<p>Replied on {{reply.time}}</p>
+			<p>{{reply.body}}</p>
+		</div>
+	{% endfor %}
+{% endblock %}

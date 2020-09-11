@@ -1,0 +1,29 @@
+{% block head %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MyBoard</title>
+	<link href="{{ url_for('static', filename='icon.ico') }}" rel="shortcut icon" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+	<meta charset="utf-8">
+	<meta http-equiv="refresh" content="60">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+{% endblock %}
+
+{% block content %}
+<body>
+	{% block alerts %}
+		{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for msg in messages %}
+			<div>
+				<strong>{{ msg }}</strong>
+			</div>
+			{% endfor %}
+		{% endif %}
+		{% endwith %}
+	{% endblock %}
+</body>
+</html>
+{% endblock %}
