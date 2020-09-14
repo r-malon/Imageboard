@@ -7,17 +7,22 @@
 	<h1 style="text-align: center;">{{board.name}}</h1>
 
 	<form action="/{{board.tag}}/post" method="post" enctype="multipart/form-data">
-		<input type="text" name="title" placeholder="Subject" required>
+		<input type="text" name="title" size="28" placeholder="Subject" pattern="[^('\x22\s)].{3,52}" required>
+		<br>
+		<input type="file" name="files[]" multiple>
 		<br>
 		<textarea name="body" placeholder="Write body" rows="4" cols="30" required></textarea>
 		<br>
 		<button>Create thread</button>
 	</form>
 
+	<br>
+
 	{% for thread in threads %}
 		<div class="box">
 			<a href="/{{board.tag}}/{{thread.id}}">{{thread.title}}</a> - {{thread.time}}
-			<blockquote>{{thread.body}}</blockquote>
+			<blockquote>{{thread.body | nl2br}}</blockquote>
+			<p style="font-size: 16px; margin: -2px;">{{len(thread.replies)}} replies</p>
 		</div>
 	{% endfor %}
 {% endblock %}

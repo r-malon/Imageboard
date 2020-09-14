@@ -1,14 +1,5 @@
-from flask import *
+from settings import *
 from models import *
-from datetime import datetime
-
-UPLOAD_FOLDER = 'static/uploads'
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'heatseeker'
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024
 
 @app.route('/')
 def home():
@@ -19,7 +10,7 @@ def board(tag):
 	try:
 		board = Board.get(Board.tag == tag)
 		#threads = Thread.select().where(Thread.board.tag == board.tag)
-		return render_template('board.html', board=board, threads=board.threads)
+		return render_template('board.html', board=board, threads=board.threads, len=len)
 	except Exception as e:
 		print(e)
 		flash('Board not found')
@@ -51,6 +42,12 @@ def post(tag):
 	title = request.form['title']
 	body = request.form['body']
 
+	if 'files[]' in request.files:
+		for file in request.files.getlist('files[]'):
+			if file and allowed_file(file.filename):
+				filename = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+				file.save(filename)
+
 	try:
 		board = Board.get(Board.tag == tag)
 		thread = Thread.create(
@@ -68,6 +65,7 @@ def post(tag):
 @app.route('/<tag>/<int:thread_id>/reply', methods=['POST'])
 def reply(tag, thread_id):
 	body = request.form['body']
+	files = request.files['files']
 
 	try:
 		thread = Thread.get_by_id(thread_id)
