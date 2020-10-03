@@ -16,6 +16,10 @@
 		<button>Create thread</button>
 	</form>
 
+	{% block dark_mode %}
+		{{ super() }}
+	{% endblock %}
+
 	<br>
 
 	{% for thread in threads %}

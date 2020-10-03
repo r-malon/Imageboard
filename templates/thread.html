@@ -18,6 +18,10 @@
 		<button>Reply</button>
 	</form>
 
+	{% block dark_mode %}
+		{{ super() }}
+	{% endblock %}
+
 	<br>
 
 	{% for reply in replies %}

@@ -29,9 +29,15 @@ class Reply(BaseModel):
 	body = TextField()
 	time = CharField()
 
+class File(BaseModel):
+	thread = ForeignKeyField(Thread, backref='files')
+	reply = ForeignKeyField(Reply, backref='files', null=True)
+	extension = CharField()
+	uuid = TextField(unique=True)
+
 
 try:
-	db.create_tables([Board, Thread, Reply])
+	db.create_tables([Board, Thread, Reply, File])
 	Board.create(tag='g', name='Technology', description='A board for tech bois')
 	Board.create(tag='x', name='Paranormal', description='A board for ghosts')
 except Exception as e:

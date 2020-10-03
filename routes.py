@@ -42,11 +42,13 @@ def post(tag):
 	title = request.form['title']
 	body = request.form['body']
 
+	'''
 	if 'files[]' in request.files:
 		for file in request.files.getlist('files[]'):
 			if file and allowed_file(file.filename):
 				filename = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
 				file.save(filename)
+	'''
 
 	try:
 		board = Board.get(Board.tag == tag)
@@ -56,6 +58,16 @@ def post(tag):
 			body=body, 
 			time=str(datetime.utcnow())[:19]
 		)
+		if 'files[]' in request.files:
+			for file in request.files.getlist('files[]'):
+				if file and allowed_file(file.filename):
+					filename = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file.filename))
+					file.save(filename)
+					File.create(
+						thread=thread, 
+						extension=get_ext(filename), 
+						uuid=uuid4().hex
+					)
 		return redirect(f'/{tag}/{thread.id}')
 	except Exception as e:
 		print(e)
@@ -65,7 +77,6 @@ def post(tag):
 @app.route('/<tag>/<int:thread_id>/reply', methods=['POST'])
 def reply(tag, thread_id):
 	body = request.form['body']
-	files = request.files['files']
 
 	try:
 		thread = Thread.get_by_id(thread_id)

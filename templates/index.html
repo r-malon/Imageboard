@@ -5,6 +5,9 @@
 
 {% block content %}
 	<h1 style="text-align: center;">Boards</h1>
+	{% block dark_mode %}
+		{{ super() }}
+	{% endblock %}
 	<ul>
 		{% for board in boards %}
 		<li>
