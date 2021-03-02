@@ -10,7 +10,7 @@ with open('SECRET_KEY', encoding='utf-8') as f:
 	SECRET_KEY = f.read()
 
 UPLOAD_FOLDER = 'static/uploads'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'bmp', 'gif'}
 # session['refresh_time'] = 60
 paragraph_re = re.compile(r'(?:\r\n|\r|\n){2,}')
 pointer_re = re.compile(r'(&gt;&gt;[0-9]+)\w+')

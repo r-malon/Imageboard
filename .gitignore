@@ -6,3 +6,6 @@ SECRET_KEY
 *.png
 *.jpg
 *.jpeg
+*.bmp
+*.gif
+*.pdf
